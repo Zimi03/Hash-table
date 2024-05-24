@@ -27,16 +27,22 @@ public:
     }
 
     DynamicArray(DynamicArray *to_copy): size(0), capacity(5) {
-        std::optional<Data> value;
         int _size = to_copy->getSize();
         array = new Data[_size];
         if (_size != 0) {
             for (int i = 0; i < _size; i++) {
-                value = to_copy->get(i);
+                std::optional<Data> value = to_copy->get(i);
                 if (value != std::nullopt) {
-                    insertBack(value.value());
+                    if constexpr (std::is_pointer<Data>::value) {
+                        // Tworzymy nowy wskaźnik na podstawie kopiowanego wskaźnika
+                        array[i] = new Data (value.value());
+//                        array[i] = new std::remove_pointer_t<Data>(*value.value());
+                    } else {
+                        array[i] = value.value();
+                    }
                 }
             }
+            size = _size;
         }
     }
 

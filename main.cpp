@@ -20,16 +20,22 @@ int main(){
         array[i] = Pair<int, int>(Utils::generateNumber(100),i);
         hash_table.insert(array[i].key, array[i].value);
     }
-    hash_table.display();
+    HashTableArray<int, int> hash_table2(hash_table);
+//    CuckooHashTable<int, int> hash_table2(hash_table);
+
+
+    hash_table2.display();
     for(int i = 0; i < size; i++){
         std::cout << "REMOVE " << array[i];
-        int index = hash_table.remove(array[i].key);
+        int index = hash_table2.remove(array[i].key);
         if(index == 0) std::cout << " - Usunięto " << std::endl;
 //        if(index != -1) std::cout << " - Usunięto - indeks: " << index << std::endl;
         else std::cout << " - NIE usunięto" << std::endl;
     }
 
+    hash_table2.display();
     hash_table.display();
+
 
 }
 
