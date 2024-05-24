@@ -4,7 +4,6 @@
 
 #ifndef HASH_TABLES_CUCKOOHASHTABLE_H
 #define HASH_TABLES_CUCKOOHASHTABLE_H
-#include "../Structures/DynamicArray.hpp"
 #include "IHashTable.h"
 
 template <typename K, typename  V>
@@ -28,7 +27,8 @@ public:
     explicit CuckooHashTable(int max_steps_);
     CuckooHashTable();
     ~CuckooHashTable() override;
-    int insert(Pair<K, V> pair) override;
+//    int insert(Pair<K, V> pair) override;
+    int insert(K key, V value) override;
     int remove(int key) override;
     void display();
 

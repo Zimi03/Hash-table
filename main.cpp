@@ -1,4 +1,5 @@
 #include "../HashTables/CuckooHashTable.h"
+#include "../HashTables/HashTableArray.h"
 #include "../Tools/Utils.hpp"
 
 
@@ -7,18 +8,20 @@
 
 int main(){
 
-    CuckooHashTable<int, int> hash_table;
+//    CuckooHashTable<int, int> hash_table;
+    HashTableArray<int, int> hash_table;
+    int size = 20;
     Pair<int, int>* para;
     std::cout << "\nSTART\n";
-    Pair<int, int> array[20];
+    Pair<int, int> array[size];
 
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < size; i++){
         std::cout << i <<"\n";
         array[i] = Pair<int, int>(Utils::generateNumber(100),i);
-        hash_table.insert(array[i]);
+        hash_table.insert(array[i].key, array[i].value);
     }
     hash_table.display();
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < size; i++){
         std::cout << "REMOVE " << array[i];
         int index = hash_table.remove(array[i].key);
         if(index == 0) std::cout << " - Usunięto " << std::endl;

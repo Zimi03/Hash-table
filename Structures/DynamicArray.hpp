@@ -42,20 +42,34 @@ public:
 
     ~DynamicArray() {
         if (array != nullptr) {
-            // Jeśli Data to wskaźnik do tablicy dynamicznej
+            // Sprawdzamy, czy Data jest wskaźnikiem do pojedynczego obiektu
             if constexpr (std::is_pointer<Data>::value && !std::is_array<Data>::value) {
                 for (int i = 0; i < size; ++i) {
                     delete array[i]; // Zwolnienie pamięci dla każdego elementu tablicy
                 }
             }
+                // Sprawdzamy, czy Data jest wskaźnikiem do tablicy
+            else if constexpr (std::is_pointer<Data>::value && std::is_array<std::remove_pointer_t<Data>>::value) {
+                for (int i = 0; i < size; ++i) {
+                    delete[] array[i]; // Zwolnienie pamięci dla każdej dynamicznej tablicy
+                }
+            }
             delete[] array; // Zwolnienie pamięci dla tablicy
         }
     }
-
+    /**
+     * Returns number of elements in data structure
+     * @return size
+     */
     int getSize() {
         return size;
     }
 
+    /**
+     * Function chcecks if data structure is empty
+     * @return 0 - not empty
+     * @return 1 - empty
+     */
     bool isEmpty() {
         return size == 0;
     }
@@ -85,6 +99,12 @@ public:
         } return 1;
     }
 
+    /**
+     * Searches for given data and returns index
+     * @param data
+     * @return -1 - not found
+     * @return >0 - found index
+     */
     int find(Data value){
         for (int i = 0; i < size; i++) {
             if (array[i] == value) {
@@ -94,16 +114,29 @@ public:
         return -1;
     }
 
+    /**
+     * Returns data on given index
+     * @param index
+     * @return data - if index ok
+     * @return std::nullopt - if index wrong
+     */
     std::optional<Data> get(int index) {
         if(index >= 0 && index < size) {
             return array[index];
         } else return std::nullopt;
     }
 
+    /**
+     * Init data structure - it is necessary for fast initzialization of data structure
+     */
     void init(Data data) {
         insertBack(data);
     }
 
+    /**
+     * Inserts element on front
+     * @param data
+     */
     void insertFront(Data data) {
         if (size == capacity) {
             grow();
@@ -116,6 +149,13 @@ public:
         size ++;
     }
 
+    /**
+     * Inserts element on given index if possible
+     * @param data
+     * @param index
+     * @return 0 - success
+     * @return 1 - fail
+     */
     int insert(int index, Data data) {
         if (index == 0) {
             insertFront(data);
@@ -139,12 +179,21 @@ public:
         return 1;
     }
 
+    /**
+     * Inserts element to the end of data structure
+     * @param data
+     */
     void insertBack(Data data){
         if (size == capacity) grow();
         array[size] = data;
         size++;
     }
 
+    /**
+     * Removes first element from data structure
+     * @return data from removed element - if index ok
+     * @return std::nullopt - if empty
+     */
     std::optional<Data> removeFront() {
         if (size != 0) {
             Data data = array[0];
@@ -153,10 +202,15 @@ public:
             }
             size--;
             if (size < (capacity/2)) shrink();
-            return data;
+            return std::make_optional(data);
         } else return std::nullopt;
     }
 
+    /**
+     * Removes element from the given index from data structure
+     * @return data from removed element - if index ok
+     * @return std::nullopt - if wrong index
+     */
     std::optional<Data> remove(int index) {
         if (index < 0 && index >= size) return std::nullopt;
         if (index == 0) return removeFront();
@@ -166,9 +220,14 @@ public:
         }
         size--;
         if(size < (capacity/2)) shrink();
-        return data;
+        return std::make_optional(data);
     }
 
+    /**
+     * Removes element from the end of data structure
+     * @return data from removed element - if index ok
+     * @return std::nullopt - if empty
+     */
     std::optional<Data> removeBack() {
         if (size == 0) return std::nullopt;
         return remove(size-1);
@@ -185,6 +244,7 @@ public:
     }
 
     void shrink() {
+        if(capacity <= 5) return;
         capacity = size;
         Data *temp = new Data[capacity];
         for (int i = 0; i < size; i++) {

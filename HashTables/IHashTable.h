@@ -17,7 +17,8 @@ public:
      * @return 0 - inserted
      * @return 1 - pair with that key has already existed in hash table
      */
-    virtual int insert(Pair<K, V> pair) = 0;
+    virtual int insert(K key, V value) = 0;
+
     /**
      * Removes pair with given key from hash table
      * @param key
