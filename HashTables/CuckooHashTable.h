@@ -9,11 +9,11 @@
 
 template <typename K, typename  V>
 class CuckooHashTable: IHashTable<K, V> {
-    Pair<K, V>* tab1;
-    Pair<K, V>* tab2;
-    int capacity;
-    int size;
-    int max_steps = 10;
+    Pair<K, V>** tab1;
+    Pair<K, V>** tab2;
+    int capacity = 10;
+    int size = 0;
+    int max_steps = 20;
     float load_factor;
     float load_factor_max = 0.5;
 
@@ -23,17 +23,14 @@ class CuckooHashTable: IHashTable<K, V> {
     int rehash();
 
     int grow();
-    int shrink();
-    int swap(Pair<K, V> &p1, Pair<K, V> &p2);
-    int swap(int p1, int p2);
-
 
 public:
+    explicit CuckooHashTable(int max_steps_);
     CuckooHashTable();
     ~CuckooHashTable() override;
     int insert(Pair<K, V> pair) override;
     int remove(int key) override;
-    int display();
+    void display();
 
 };
 

@@ -11,8 +11,14 @@ public:
     K key;
     V value;
 
+    Pair(Pair &para){
+        key = para.key;
+        value = para.value;
+    };
     Pair(K key_, V val) : key(key_), value(val) {};
     Pair() = default;
+    ~Pair() = default;
+
 
     friend std::ostream& operator<<(std::ostream& os, const Pair<K, V>& p) {
         os << "{" << p.key << ", " << p.value << "}";

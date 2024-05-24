@@ -1,19 +1,32 @@
 #include "../HashTables/CuckooHashTable.h"
-
+#include "../Tools/Utils.hpp"
 
 
 
 
 
 int main(){
+
     CuckooHashTable<int, int> hash_table;
     Pair<int, int>* para;
-    for(int i = 0; i < 10; i++){
-        para = new Pair<int, int>(i,i);
-        hash_table.insert(*para);
+    std::cout << "\nSTART\n";
+    Pair<int, int> array[20];
+
+    for(int i = 0; i < 20; i++){
+        std::cout << i <<"\n";
+        array[i] = Pair<int, int>(Utils::generateNumber(100),i);
+        hash_table.insert(array[i]);
     }
     hash_table.display();
+    for(int i = 0; i < 20; i++){
+        std::cout << "REMOVE " << array[i];
+        int index = hash_table.remove(array[i].key);
+        if(index == 0) std::cout << " - Usunięto " << std::endl;
+//        if(index != -1) std::cout << " - Usunięto - indeks: " << index << std::endl;
+        else std::cout << " - NIE usunięto" << std::endl;
+    }
 
+    hash_table.display();
 
 }
 
