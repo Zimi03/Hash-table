@@ -7,7 +7,7 @@
 #include "IHashTable.h"
 
 template <typename K, typename  V>
-class CuckooHashTable: IHashTable<K, V> {
+class CuckooHashTable: public IHashTable<K, V> {
     Pair<K, V>** tab1;
     Pair<K, V>** tab2;
     int capacity = 10;
@@ -26,7 +26,7 @@ class CuckooHashTable: IHashTable<K, V> {
 public:
     explicit CuckooHashTable(int max_steps_);
     CuckooHashTable();
-    explicit CuckooHashTable(CuckooHashTable<K, V> &to_copy);
+    explicit CuckooHashTable(CuckooHashTable<K, V> *to_copy);
     ~CuckooHashTable() override;
 //    int insert(Pair<K, V> pair) override;
     int insert(K key, V value) override;

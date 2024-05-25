@@ -18,22 +18,22 @@ CuckooHashTable<K, V>::CuckooHashTable() {
 }
 
 template <typename K, typename V>
-CuckooHashTable<K, V>::CuckooHashTable(CuckooHashTable<K, V> &to_copy) {
-    capacity = to_copy.capacity;
-    size = to_copy.size;
-    load_factor = to_copy.load_factor;
-    load_factor_max = to_copy.load_factor_max;
-    max_steps = to_copy.max_steps;
+CuckooHashTable<K, V>::CuckooHashTable(CuckooHashTable<K, V> *to_copy) {
+    capacity = to_copy->capacity;
+    size = to_copy->size;
+    load_factor = to_copy->load_factor;
+    load_factor_max = to_copy->load_factor_max;
+    max_steps = to_copy->max_steps;
 
     Pair<K, V> *tmp;
     tab1 = new Pair<K, V>*[capacity] {nullptr};
     tab2 = new Pair<K, V>*[capacity] {nullptr};
     for(int i =0 ; i < capacity; i++){
-        tmp = to_copy.tab1[i];
+        tmp = to_copy->tab1[i];
         if(tmp != nullptr) {
             tab1[i] = new Pair<K, V>(tmp->key, tmp->value);
         }
-        tmp = to_copy.tab2[i];
+        tmp = to_copy->tab2[i];
         if(tmp != nullptr) {
             tab2[i] = new Pair<K, V>(tmp->key, tmp->value);
         }

@@ -9,7 +9,7 @@
 
 
 template <typename K, typename  V>
-class HashTableArray: IHashTable<K, V> {
+class HashTableArray: public IHashTable<K, V> {
     DynamicArray<Pair<K, V>>** array;
     int capacity = 10;
     int size = 0;
@@ -25,7 +25,7 @@ class HashTableArray: IHashTable<K, V> {
 
 public:
     HashTableArray();
-    explicit HashTableArray(HashTableArray<K, V> &to_copy);
+    explicit HashTableArray(HashTableArray<K, V> *to_copy);
     ~HashTableArray() override;
 //    int insert(Pair<K, V> pair) override;
     int insert(K key, V value) override;

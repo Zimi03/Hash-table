@@ -5,6 +5,7 @@
 #ifndef HASH_TABLES_PAIR_HPP
 #define HASH_TABLES_PAIR_HPP
 #include "iostream"
+#include "Utils.hpp"
 
 template <typename K, typename V>
 struct  Pair {
@@ -16,6 +17,18 @@ public:
         key = para.key;
         value = para.value;
     };
+
+    Pair(int size){
+        key = Utils::generateNumber(size * 5);
+        value = Utils::generateNumber(size);
+    };
+
+    Pair(Pair* &data, int size){
+        int index = Utils::generateNumber(size);
+        key = data[index].key;
+        value = data[index].value;
+    }
+
     Pair(K key_, V val) : key(key_), value(val) {};
     Pair() = default;
     ~Pair() = default;
