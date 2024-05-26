@@ -94,11 +94,17 @@ public:
 
     int remove(int key) override {
         int index = hash(key);
-        while (arr[index] != nullptr && arr[index]->key != key) {
-            index++;
-            if (index == capacity) index = 0;
+        int i = 0;
+        for(i = 0; i < capacity; i++){
+            if(arr[index] != nullptr && arr[index]->key == key ) break;
+            if (++index == capacity) index = 0;
         }
-        if (arr[index] == nullptr) return 1;
+        if(i == capacity) return 1;
+//        while (index < capacity && arr[index]->key != key) {
+//            index++;
+//            if (index == capacity) index = 0;
+//        }
+//        if (arr[index] == nullptr) return 1;
 
         delete arr[index];
         arr[index] = nullptr;
@@ -111,9 +117,9 @@ public:
     void display() {
         for (int i = 0; i < capacity; i++) {
             if (arr[i] != nullptr) {
-                std::cout << "Key: " << arr[i]->key << " Value: " << arr[i]->value << std::endl;
+                std::cout << "Index: " << i << " | " << *arr[i] << std::endl;
             } else {
-                std::cout << "Index: " << i << "Empty" << std::endl;
+                std::cout << "Index: " << i << " | " << "empty" << std::endl;
             }
         }
     }

@@ -44,6 +44,15 @@ public:
     }
 
     ~DynamicArray() {
+//        if (array != nullptr) {
+//            if constexpr (std::is_pointer<Data>::value) {
+//                for (int i = 0; i < size; ++i) {
+//                    delete array[i];
+//                }
+//            }
+//            delete[] array;
+//        }
+
         if (array != nullptr) {
             // Sprawdzamy, czy Data jest wskaźnikiem do pojedynczego obiektu
             if constexpr (std::is_pointer<Data>::value && !std::is_array<Data>::value) {
@@ -54,7 +63,8 @@ public:
                 // Sprawdzamy, czy Data jest wskaźnikiem do tablicy
             else if constexpr (std::is_pointer<Data>::value && std::is_array<std::remove_pointer_t<Data>>::value) {
                 for (int i = 0; i < size; ++i) {
-                    delete[] array[i]; // Zwolnienie pamięci dla każdej dynamicznej tablicy
+                    if(array[i]!= nullptr)
+                        delete[] array[i]; // Zwolnienie pamięci dla każdej dynamicznej tablicy
                 }
             }
             delete[] array; // Zwolnienie pamięci dla tablicy

@@ -13,7 +13,7 @@ public:
     K key;
     V value;
 
-    Pair(Pair &para){
+    Pair(const Pair &para){
         key = para.key;
         value = para.value;
     };
@@ -46,6 +46,11 @@ public:
     bool operator!=(const Pair<K, V>& other) const {
         return !(*this == other);
     }
+
+    friend bool operator<(const Pair<K, V>& lhs, const Pair<K, V>& rhs) {
+        return lhs.key < rhs.key;
+    }
+
 };
 
 #endif //HASH_TABLES_PAIR_HPP

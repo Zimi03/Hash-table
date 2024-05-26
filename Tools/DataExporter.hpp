@@ -47,7 +47,7 @@ class DataExporter {
         }
 
         std::string createNewFolder(){
-            std::filesystem::path baseDir = std::filesystem::current_path().parent_path() / "src" / "Results";
+            std::filesystem::path baseDir = std::filesystem::current_path().parent_path() / "Results";
 
             // Zliczanie istniejących katalogów Results
             int maxResults = 0;

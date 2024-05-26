@@ -29,6 +29,8 @@ CuckooHashTable<K, V>::CuckooHashTable(CuckooHashTable<K, V> *to_copy) {
     tab1 = new Pair<K, V>*[capacity] {nullptr};
     tab2 = new Pair<K, V>*[capacity] {nullptr};
     for(int i =0 ; i < capacity; i++){
+//        tab1[i] = to_copy->tab1[i] ? new Pair<K, V>(*to_copy->tab1[i]) : nullptr;
+//        tab2[i] = to_copy->tab2[i] ? new Pair<K, V>(*to_copy->tab2[i]) : nullptr;
         tmp = to_copy->tab1[i];
         if(tmp != nullptr) {
             tab1[i] = new Pair<K, V>(tmp->key, tmp->value);
@@ -103,13 +105,12 @@ int CuckooHashTable<K, V>::grow() {
 }
 
 template <typename K, typename V>
-//int CuckooHashTable<K, V>::insert(Pair<K, V> pair) {
 int CuckooHashTable<K, V>::insert(K key, V value) {
 
     int indeks1 = hashfunction1(key);
     int indeks2 = hashfunction2(key);
-    if(tab1[indeks1] != nullptr && tab1[indeks1]->key == key) return 1;
-    if(tab2[indeks2] != nullptr && tab2[indeks2]->key == key) return 1;
+    if(tab1[indeks1] != nullptr && tab1[indeks1]->key != key) return 1;
+    if(tab2[indeks2] != nullptr && tab2[indeks2]->key != key) return 1;
     Pair<K, V>* current_pair;
     Pair<K, V>* to_change = new Pair<K, V>(key, value);
 
@@ -169,13 +170,13 @@ void CuckooHashTable<K, V>::display() {
     Pair<K, V>* para;
     for(int i = 0; i < capacity; i++){
         para = tab1[i];
-        if(para != nullptr) std::cout << "Indeks: " << i << " | " << *para << std::endl;
-        else std::cout << "Indeks: " << i << " | " << "nullptr"<< std::endl;
+        if(para != nullptr) std::cout << "Index: " << i << " | " << *para << std::endl;
+        else std::cout << "Indeks: " << i << " | " << "empty"<< std::endl;
     }
     for(int i = 0; i < capacity; i++){
         para = tab2[i];
-        if(para != nullptr) std::cout << "Indeks: " << i << " | " << *para << std::endl;
-        else std::cout << "Indeks: " << i << " | " << "nullptr"<< std::endl;
+        if(para != nullptr) std::cout << "Index: " << i << " | " << *para << std::endl;
+        else std::cout << "Index: " << i << " | " << "empty"<< std::endl;
     }
 }
 

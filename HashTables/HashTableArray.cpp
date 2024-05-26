@@ -20,6 +20,7 @@ HashTableArray<K, V>::HashTableArray(HashTableArray<K, V> *to_copy) {
 
     array = new DynamicArray<Pair<K, V>>*[capacity] {nullptr};
     for(int i =0 ; i < capacity; i++){
+//        array[i] = to_copy->array[i] ? new DynamicArray<Pair<K, V>>(*to_copy->array[i]) : nullptr;
         if (to_copy->array[i] != nullptr) {
             array[i] = new DynamicArray<Pair<K, V>>(to_copy->array[i]);
         }
@@ -30,9 +31,9 @@ HashTableArray<K, V>::HashTableArray(HashTableArray<K, V> *to_copy) {
 
 template <typename K, typename V>
 HashTableArray<K, V>::~HashTableArray() {
-    for (int i = 0; i < capacity; i++) {
-        if (array[i] != nullptr) delete array[i];
-    }
+//    for (int i = 0; i < capacity; i++) {
+//        if (array[i] != nullptr) delete array[i];
+//    }
     delete[] array;
 }
 
@@ -147,10 +148,10 @@ template <typename K, typename V>
 void HashTableArray<K, V>::display() {
     for(int i = 0; i < capacity; i++) {
         if (array[i] == nullptr) {
-            std::cout << "Indeks: " << i << " | " << "nullptr" << std::endl;
+            std::cout << "Index: " << i << " | " << "empty" << std::endl;
         } else {
             int array_size = array[i]->getSize();
-            std::cout << "Indeks: " << i;
+            std::cout << "Index: " << i;
             for (int j = 0; j < array_size; j++) {
                 std::optional<Pair<K, V>> para = array[i]->get(j);
                 if (para != std::nullopt) {
