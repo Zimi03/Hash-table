@@ -11,11 +11,23 @@ class OpenAddressing: public IHashTable<K, V> {
     float load_factor;
     float load_factor_max;
 
+    /**
+     * Hash function returning int as a hashed key
+     * @param key
+     * @return
+     */
     int hash(K key) {
         int x = key % capacity;
         return x;
     }
 
+    /**
+     * Checks whether there is a need of increasing size of hash table
+     * If there is, it increase size and rehash hash table
+     * @tparam K
+     * @tparam V
+     * @return
+     */
     void grow() {
         int old_capacity = capacity;
         capacity *= 2;
@@ -52,7 +64,12 @@ public:
         arr = new Pair<K, V>*[capacity] {nullptr};
     }
 
-    
+    /**
+    * Copy constructor
+    * @tparam K
+    * @tparam V
+    * @param to_copy
+    */
     explicit OpenAddressing(OpenAddressing<K, V> *to_copy) {
         capacity = to_copy->capacity;
         curr_size = to_copy->curr_size;
@@ -77,13 +94,13 @@ public:
 
     int insert(K key, V value) override {
         int index = hash(key);
-        while (arr[index] != nullptr && arr[index]->key != key) {
+        while (arr[index] != nullptr && arr[index]->key != key) { // dopóki znajdzie wolne miejsce lub taki sam klucz
             index++;
             if (index == capacity) index = 0;
         }
-        if (arr[index] != nullptr) return 1;
+        if (arr[index] != nullptr) return 1; // jeśli klucz znaleziony to wyjdź
 
-        arr[index] = new Pair<K, V>(key, value);
+        arr[index] = new Pair<K, V>(key, value); // dodanie pary i aktualizacja stanu tablicy mieszającej
         curr_size++;
         load_factor = static_cast<float>(curr_size) / capacity;
 
@@ -95,18 +112,13 @@ public:
     int remove(int key) override {
         int index = hash(key);
         int i = 0;
-        for(i = 0; i < capacity; i++){
+        for(i = 0; i < capacity; i++){ // szukamy klucza w tablicy
             if(arr[index] != nullptr && arr[index]->key == key ) break;
-            if (++index == capacity) index = 0;
+            if (++index == capacity) index = -1;
         }
-        if(i == capacity) return 1;
-//        while (index < capacity && arr[index]->key != key) {
-//            index++;
-//            if (index == capacity) index = 0;
-//        }
-//        if (arr[index] == nullptr) return 1;
+        if(i == capacity) return 1; // jeśli przeszukaliśmy całą tablice i nie znaleźliśmy klucza
 
-        delete arr[index];
+        delete arr[index]; // usuń i zaktualizuj stan
         arr[index] = nullptr;
         curr_size--;
         load_factor = static_cast<float>(curr_size) / capacity;
@@ -114,6 +126,9 @@ public:
         return 0;
     }
 
+    /**
+     * Displays hash table
+     */
     void display() {
         for (int i = 0; i < capacity; i++) {
             if (arr[i] != nullptr) {
